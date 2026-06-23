@@ -25,17 +25,44 @@ app.py  (entry point, Streamlit UI)
 
 ### Data Flow (request lifecycle)
 ```
-1. User types query in sidebar chat_input
-2. app.py calls agent.process_query(user_query)
-3. agent.py sends SystemPrompt + user_query + Tools to LLM
-4. LLM returns tool calls (up to 5 rounds):
-   a. find_location → routing.geocode() → lat/lon + display_name
-   b. get_routes → routing.get_routes() → 3 route coordinate arrays
-   c. get_weather → weather.get_weather() → temp/wind/precip/uv
-   d. score_routes → scoring.score_routes() → scored route list
-5. LLM writes natural language summary
-6. agent.py returns {text, scored_routes, weather} to app.py
-7. app.py updates session_state, re-renders map + scorecards
+USER          APP.PY               AGENT.PY                  SERVICE            DATA/API
+────          ──────               ────────                  ───────            ────────
+Type query → st.chat_input
+              ↓
+              process_query(query)
+              ↓
+              _extract_preferences() → {hot, pollution, scenic}
+              ↓
+              LLM(SystemPrompt + Tools) ───────────────────────────────────── OpenCode Zen
+              ↓                               (tool_calls loop, max 5 rounds)
+              ├── find_location × 2 ───────── routing.geocode() ───────────── Nominatim/ORS
+              │                                         ↓                      cache/location.json
+              │                                   {lat, lon, display_name}
+              │
+              ├── get_routes ────────────────── routing.get_routes() ──────── ORS / OSRM
+              │                                         ↓
+              │                              _route_cache["routes"] (full)
+              │                              return simplified metadata to LLM
+              │
+              ├── get_weather ──────────────── wx.get_weather() ────────────── Open-Meteo
+              │                                         ↓
+              │                              _weather_cache["weather"]
+              │
+              ├── score_routes ─────────────── scoring.score_routes()
+              │                              → data_fetch.get_trees/parks/water/historic
+              │                                         ↓                  Overpass/cache
+              │                              7-factor segment scoring
+              │                              normalize to 75 max
+              │
+              └── LLM returns text summary
+              ↓
+              return {text, scored_routes, weather}
+              ↓
+         st.session_state update
+         ├── build_map() ──→ Folium map with routes + user location
+         └── render_scorecards() ──→ Unicode bar charts per route
+
+  On LLM failure: _fallback_process() ──→ same pipeline, hardcoded coords fallback
 ```
 
 ### External APIs Used
@@ -47,6 +74,69 @@ app.py  (entry point, Streamlit UI)
 | **Open-Meteo** | `weather.py` | Free, no key | 10k req/day | Current weather data |
 | **Overpass API** (OSM) | `data_fetch.py` | Free, no key | Fair use | Environmental feature queries |
 | **OpenCode Zen API** | `agent.py` | API key | Paid tier | LLM inference (DeepSeek V4) |
+
+---
+
+### 2.5 Layered Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         UI LAYER (app.py)                                │
+│  Streamlit sidebar · Folium map · st_folium · Chat messages            │
+│  streamlit_geolocation · Chat input · Scorecards · Weather display     │
+│  Session state: chat_history, scored_routes, weather, location          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                     ORCHESTRATION LAYER (agent.py)                       │
+│  LiteLLM completion() · Tool dispatcher · _route_cache                 │
+│  _weather_cache · _extract_preferences() · _fallback_process()          │
+│  System prompt (Nuremberg local context) · 4 tool definitions           │
+│  reasoning_content handling (DeepSeek) · Max 5 tool-call rounds         │
+├─────────────────────────────────────────────────────────────────────────┤
+│                         SERVICE LAYER                                    │
+│  ┌─────────────────┐  ┌──────────────────┐  ┌────────────────────────┐ │
+│  │ routing.py      │  │ weather.py       │  │ scoring.py             │ │
+│  │ geocode()       │  │ get_weather()    │  │ score_routes()         │ │
+│  │ get_routes()    │  │ Open-Meteo API   │  │ split_route()          │ │
+│  │ Nominatim / ORS │  │ (free, no key)   │  │ score_segment()        │ │
+│  │ OSRM fallback   │  └──────────────────┘  │ 7-factor model         │ │
+│  └────────┬────────┘                        │ _load_env_data()       │ │
+│           │                                 └───────────┬────────────┘ │
+│           │                                              │              │
+│           │          ┌──────────────────────────────┐     │              │
+│           └──────────│ data_fetch.py                │─────┘              │
+│                      │ Overpass API (3 mirrors)     │                    │
+│                      │ 5-tier fallback chain        │                    │
+│                      │ OSM → GeoJSON conversion     │                    │
+│                      └──────────────────────────────┘                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                            DATA LAYER                                    │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌───────────────┐  │
+│  │ cache/location.json  │  │ cache/overpass/      │  │ In-Memory     │  │
+│  │ Geocode results      │  │ trees.json · parks   │  │ _cache        │  │
+│  │ (Nominatim + ORS)    │  │ water.json · historic│  │ _route_cache  │  │
+│  │ Keyed by query       │  │ 2-hour TTL per key   │  │ _weather_cache│  │
+│  └──────────────────────┘  └──────────────────────┘  └───────────────┘  │
+│  ┌──────────────────────┐  ┌──────────────────────┐                      │
+│  │ data/trees.geojson   │  │ data/air_quality.csv │                      │
+│  │ data/parks.geojson   │  │ 37 Nuremberg         │                      │
+│  │ data/water.geojson   │  │ districts with       │                      │
+│  │ data/historic.geojson│  │ NO2 + PM2.5 (µg/m³)  │                      │
+│  │ (Offline fallback)   │  └──────────────────────┘                      │
+│  └──────────────────────┘                                                │
+├─────────────────────────────────────────────────────────────────────────┤
+│                         EXTERNAL API LAYER                                │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌───────────┐ │
+│  │Nominatim │  │ ORS      │  │ OSRM     │  │Open-Meteo│  │ Overpass  │ │
+│  │Geocode   │  │Route+Geo │  │Route     │  │Weather   │  │Env GIS    │ │
+│  │Free      │  │Key req.  │  │Free      │  │Free      │  │Free       │ │
+│  │1 req/s   │  │~40 req/m │  │Fair use  │  │10k req/d │  │Fair use   │ │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └───────────┘ │
+│  ┌──────────────────┐  ┌────────────────────────────────────┐           │
+│  │ OpenCode Zen API │  │ Browser Geolocation (JS GPS API)   │           │
+│  │ LLM (DeepSeek V4)│  │ streamlit-geolocation component    │           │
+│  └──────────────────┘  └────────────────────────────────────┘           │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -406,6 +496,90 @@ cache/
     parks.json               ← Park/garden GeoJSON (2h TTL)
     water.json               ← Water body GeoJSON (2h TTL)
     historic.json            ← Historic site GeoJSON (2h TTL)
+```
+
+### Caching Architecture & Pipeline
+
+Three caching tiers, checked in order of speed. Every env data request traverses this exact chain:
+
+```
+CACHE TIERS (fastest → slowest)
+══════════════════════════════════
+
+  L1: IN-MEMORY (process lifetime)
+  ┌────────────────────────────────────────────────────────────────┐
+  │  data_fetch._cache   agent._route_cache   agent._weather_cache │
+  │  {trees, parks,      {routes: [r0, r1,    {weather: {...}}    │
+  │   water, historic}    r2]} (full coords)                       │
+  │  Avoids re-fetching  LLM never sees       Holds weather for   │
+  │  env data in same    coordinate arrays    UI return            │
+  │  request                                                            │
+  └────────────────────────────────────────────────────────────────┘
+                              │  miss
+                              ▼
+  L2: FILE CACHE (disk, 2h TTL, survives restarts)
+  ┌────────────────────────────────────────────────────────────────┐
+  │  cache/location.json       cache/overpass/                     │
+  │  Key: normalized query     trees.json · parks.json             │
+  │  Val: {lat, lon, name,     water.json · historic.json          │
+  │        cached_at}          Val: {data: FeatureCollection,     │
+  │  Used by geocode()         cached_at: timestamp}               │
+  │                          Used by _fetch_feature()            │
+  └────────────────────────────────────────────────────────────────┘
+                              │  miss (or stale)
+                              ▼
+  L3: LIVE API (network)
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Overpass API (3 mirrors tried in sequence)                     │
+  │  overpass-api.de → overpass.osm.ch → overpass.kumi.systems     │
+  │  25s timeout per mirror, 2 retries with 3s/6s backoff          │
+  │  On success: save result to file cache + in-memory cache       │
+  │  On failure: fall through to stale cache → fallback GeoJSON    │
+  └────────────────────────────────────────────────────────────────┘
+
+
+REQUEST FLOW THROUGH CACHES
+═══════════════════════════
+
+  GEOCODE REQUEST                        ENV DATA REQUEST
+  (routing.geocode)                      (data_fetch._fetch_feature)
+       │                                        │
+       ▼                                        ▼
+  ┌──────────────┐                        ┌──────────────┐
+  │ location.json │                        │ _cache       │
+  │ cache hit?    │                        │ (in-memory)  │
+  └───┬───────┬───┘                        │ hit?         │
+   yes│       │no                          └───┬───────┬───┘
+      │       ▼                           yes│       │no
+      │  ┌────────────┐                       │       ▼
+      │  │ Nominatim  │                       │  ┌──────────────┐
+      │  │ API (free) │                       │  │ file cache   │
+      │  └───┬────┬───┘                       │  │ < 2h TTL?    │
+      │   ok  │    │fail                      │  └───┬──────┬───┘
+      │      ▼    ▼                      yes  │      │      │no
+      │  ┌──────┐ ┌──────────┐                │      ▼      ▼
+      │  │save +│ │ORS Geo   │                │  ┌────┐ ┌──────────┐
+      │  │return│ │(if key)  │                │  │hit │ │ Overpass │
+      │  └──────┘ └──┬───────┘                │  └────┘ │ API live │
+      │          ok   │  fail                 │         │ (3 mir.) │
+      │               ▼    ▼                  │         └────┬──────┘
+      │          ┌──────┐ ┌──────┐            │         ok   │  fail
+      │          │save +│ │return│            │           ▼      ▼
+      │          │return│ │None  │            │      ┌──────┐ ┌────────┐
+      │          └──────┘ └──────┘            │      │save +│ │stale   │
+      ▼                                       │      │return│ │cache?  │
+  Return to caller                       return│      └──────┘ └───┬────┘
+                                                │              yes │  no
+                                                │                 ▼   ▼
+                                                │           ┌────────┐ ┌──────┐
+                                                │           │return  │ │fall- │
+                                                │           └────────┘ │back  │
+                                                │                     │Geo-  │
+                                                │                     │JSON  │
+                                                │                     │or [] │
+                                                │                     └──────┘
+                                                ▼
+                                        Return to caller
 ```
 
 ### Fallback Data Files
