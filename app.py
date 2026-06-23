@@ -203,21 +203,6 @@ with st.sidebar:
         st.markdown(f"**Origin:** {st.session_state.my_location['name'][:60]}")
 
     st.markdown("---")
-    st.markdown("**Examples:**")
-    examples = [
-        "Bike from Südstadt to adorsys, it's hot",
-        "Walk from Hauptbahnhof to Wöhrder Wiese",
-        "Scooter to Marienberg Park, avoid traffic",
-        "Scenic bike route from Mitte to Volkspark Dutzendteich",
-    ]
-    for ex in examples:
-        if st.button(ex, key=f"ex_{ex[:20]}"):
-            st.session_state.chat_history.append({"role": "user", "content": ex})
-            st.rerun()
-
-col_chat, col_map = st.columns([1, 2])
-
-with col_chat:
     st.markdown("### 💬 Commute Concierge")
 
     for msg in st.session_state.chat_history:
@@ -247,10 +232,22 @@ with col_chat:
                         st.session_state.scored_routes = scored
                         st.session_state.weather_data = getattr(_fallback_process, "_last_weather", None)
 
-with col_map:
-    st.markdown("### 🗺️ Route Map")
-    m = build_map(st.session_state.scored_routes, st.session_state.raw_location)
-    st_folium(m, use_container_width=True, height=500)
+    st.markdown("---")
+    st.markdown("**Examples:**")
+    examples = [
+        "Bike from Südstadt to adorsys, it's hot",
+        "Walk from Hauptbahnhof to Wöhrder Wiese",
+        "Scooter to Marienberg Park, avoid traffic",
+        "Scenic bike route from Mitte to Volkspark Dutzendteich",
+    ]
+    for ex in examples:
+        if st.button(ex, key=f"ex_{ex[:20]}"):
+            st.session_state.chat_history.append({"role": "user", "content": ex})
+            st.rerun()
+
+st.markdown("### 🗺️ Route Map")
+m = build_map(st.session_state.scored_routes, st.session_state.raw_location)
+st_folium(m, use_container_width=True, height=700)
 
 st.markdown("---")
 if st.session_state.scored_routes:
@@ -262,4 +259,4 @@ if st.session_state.scored_routes:
         if w.get("temperature") is not None:
             st.markdown(f"**Current Weather:** {w['temperature']}°C · 💨 {w.get('wind_speed', '?')} km/h · 🌧️ {w.get('precipitation', '?')} mm")
 else:
-    st.info("👆 Ask the Commute Concierge above to see scored routes on the map.")
+    st.info("👆 Ask the Commute Concierge in the sidebar to see scored routes on the map.")
