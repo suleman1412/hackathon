@@ -1,0 +1,10 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "properties": {"name": "Pegnitz", "type": "waterway"}, "geometry": {"type": "LineString", "coordinates": [[11.070, 49.445], [11.080, 49.448], [11.090, 49.450], [11.100, 49.448], [11.110, 49.445]]}},
+    {"type": "Feature", "properties": {"name": "Dutzendteich", "type": "water"}, "geometry": {"type": "Polygon", "coordinates": [[[11.092, 49.431], [11.102, 49.431], [11.102, 49.440], [11.092, 49.440], [11.092, 49.431]]]}},
+    {"type": "Feature", "properties": {"name": "Wöhrder See", "type": "water"}, "geometry": {"type": "Polygon", "coordinates": [[[11.087, 49.449], [11.098, 49.449], [11.098, 49.456], [11.087, 49.456], [11.087, 49.449]]]}},
+    {"type": "Feature", "properties": {"name": "Hallenbadweiher", "type": "water"}, "geometry": {"type": "Polygon", "coordinates": [[[11.072, 49.458], [11.078, 49.458], [11.078, 49.463], [11.072, 49.463], [11.072, 49.458]]]}},
+    {"type": "Feature", "properties": {"name": "Eibaacher Bucht", "type": "water"}, "geometry": {"type": "Polygon", "coordinates": [[[11.050, 49.440], [11.060, 49.440], [11.060, 49.448], [11.050, 49.448], [11.050, 49.440]]]}}
+  ]
+}

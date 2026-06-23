@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "properties": {"type": "forest", "name": "Lorenzer Reichswald"}, "geometry": {"type": "Polygon", "coordinates": [[[11.15, 49.42], [11.20, 49.42], [11.20, 49.45], [11.15, 49.45], [11.15, 49.42]]]}},
+    {"type": "Feature", "properties": {"type": "forest", "name": "Sebalder Reichswald"}, "geometry": {"type": "Polygon", "coordinates": [[[11.08, 49.42], [11.13, 49.42], [11.13, 49.48], [11.08, 49.48], [11.08, 49.42]]]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.077, 49.451]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.078, 49.452]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.079, 49.453]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.080, 49.454]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.085, 49.460]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.090, 49.465]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.075, 49.448]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.100, 49.440]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.105, 49.445]}},
+    {"type": "Feature", "properties": {"type": "tree"}, "geometry": {"type": "Point", "coordinates": [11.110, 49.450]}}
+  ]
+}

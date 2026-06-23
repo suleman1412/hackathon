@@ -1,0 +1,11 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "properties": {"name": "Marienberg Park", "type": "park"}, "geometry": {"type": "Polygon", "coordinates": [[[11.060, 49.430], [11.075, 49.430], [11.075, 49.440], [11.060, 49.440], [11.060, 49.430]]]}},
+    {"type": "Feature", "properties": {"name": "Wöhrder Wiese", "type": "park"}, "geometry": {"type": "Polygon", "coordinates": [[[11.085, 49.448], [11.100, 49.448], [11.100, 49.455], [11.085, 49.455], [11.085, 49.448]]]}},
+    {"type": "Feature", "properties": {"name": "Stadtpark", "type": "park"}, "geometry": {"type": "Polygon", "coordinates": [[[11.070, 49.455], [11.085, 49.455], [11.085, 49.465], [11.070, 49.465], [11.070, 49.455]]]}},
+    {"type": "Feature", "properties": {"name": "Volkspark Dutzendteich", "type": "park"}, "geometry": {"type": "Polygon", "coordinates": [[[11.090, 49.430], [11.105, 49.430], [11.105, 49.442], [11.090, 49.442], [11.090, 49.430]]]}},
+    {"type": "Feature", "properties": {"name": "Rosenaupark", "type": "park"}, "geometry": {"type": "Polygon", "coordinates": [[[11.060, 49.455], [11.070, 49.455], [11.070, 49.462], [11.060, 49.462], [11.060, 49.455]]]}},
+    {"type": "Feature", "properties": {"name": "Hespelgarten", "type": "garden"}, "geometry": {"type": "Polygon", "coordinates": [[[11.075, 49.435], [11.082, 49.435], [11.082, 49.440], [11.075, 49.440], [11.075, 49.435]]]}}
+  ]
+}

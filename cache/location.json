@@ -1,0 +1,86 @@
+{
+  "südstadt nuremberg": {
+    "lat": 49.4257629,
+    "lon": 11.0596819,
+    "display_name": "KGV Südstadt e.V., Werderau, Südliche Außenstadt, Nürnberg, Bayern, Deutschland",
+    "cached_at": 1782235830.659416
+  },
+  "adorsys nuremberg": {
+    "lat": 49.4597746,
+    "lon": 11.0297877,
+    "display_name": "adorsys GmbH & Co. KG, 246a, Fürther Straße, Eberhardshof, Westliche Außenstadt, Nürnberg, Bayern, 90429, Deutschland",
+    "cached_at": 1782235830.6935701
+  },
+  "erlangen hbf, germany": {
+    "lat": 49.5961741,
+    "lon": 11.0026598,
+    "display_name": "Erlangen Hauptbahnhof B, Bahnhofplatz, Stadtrandsiedlung, Innenstadt, Erlangen, Bayern, 91054, Deutschland",
+    "cached_at": 1782236545.6969118
+  },
+  "fürth hbf, germany": {
+    "lat": 49.4703063,
+    "lon": 10.9912982,
+    "display_name": "Fürth Hauptbahnhof, Bahnhofplatz, Altstadt, Innenstadt, Süd, Fürth, Bayern, 90762, Deutschland",
+    "cached_at": 1782236546.447505
+  },
+  "giessen, germany": {
+    "lat": 50.5862066,
+    "lon": 8.6742306,
+    "display_name": "Gießen, Landkreis Gießen, Hessen, Deutschland",
+    "cached_at": 1782236634.207005
+  },
+  "frankfurt, germany": {
+    "lat": 50.1106444,
+    "lon": 8.6820917,
+    "display_name": "Frankfurt am Main, Hessen, Deutschland",
+    "cached_at": 1782236635.553247
+  },
+  "schwabach bayernstr.": {
+    "lat": 49.3354532,
+    "lon": 11.0493184,
+    "display_name": "Bayernstraße, Rößleinsmühle, Penzendorf, Schwabach, Bayern, 91126, Deutschland",
+    "cached_at": 1782237029.2742589
+  },
+  "am buckberg leinburg": {
+    "lat": 49.4603834,
+    "lon": 11.2954286,
+    "display_name": "Am Buckberg, Diepersdorf, Leinburg, Landkreis Nürnberger Land, Bayern, 91227, Deutschland",
+    "cached_at": 1782237029.39991
+  },
+  "südstadt, nuremberg, germany": {
+    "lat": 49.4257629,
+    "lon": 11.0596819,
+    "display_name": "KGV Südstadt e.V., Werderau, Südliche Außenstadt, Nürnberg, Bayern, Deutschland",
+    "cached_at": 1782237867.188226
+  },
+  "mitte nuremberg": {
+    "lat": 49.4489507,
+    "lon": 11.077423,
+    "display_name": "Mitte, Hallplatz, Altstadt, St. Lorenz, Altstadt und engere Innenstadt, Nürnberg, Bayern, 90402, Deutschland",
+    "cached_at": 1782237873.2374241
+  },
+  "adorsys, nuremberg, germany": {
+    "lat": 49.4597746,
+    "lon": 11.0297877,
+    "display_name": "adorsys GmbH & Co. KG, 246a, Fürther Straße, Eberhardshof, Westliche Außenstadt, Nürnberg, Bayern, 90429, Deutschland",
+    "cached_at": 1782237897.015462
+  },
+  "hauptbahnhof nuremberg": {
+    "lat": 49.4470204,
+    "lon": 11.0821774,
+    "display_name": "Hauptbahnhof, Königstorpassage, Tafelhof, Altstadt und engere Innenstadt, Nürnberg, Bayern, 90402, Deutschland",
+    "cached_at": 1782238227.322732
+  },
+  "wöhrder wiese nuremberg": {
+    "lat": 49.4524901,
+    "lon": 11.086949,
+    "display_name": "Wöhrder Wiese, Franz-Josef-Strauß-Brücke, Marienvorstadt, Altstadt und engere Innenstadt, Nürnberg, Bayern, 90402, Deutschland",
+    "cached_at": 1782238227.5130959
+  },
+  "mögeldorf nuremberg": {
+    "lat": 49.4598172,
+    "lon": 11.1318843,
+    "display_name": "Mögeldorf, Östliche Außenstadt, Nürnberg, Bayern, 90482, Deutschland",
+    "cached_at": 1782238640.997036
+  }
+}

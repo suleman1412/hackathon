@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "properties": {"name": "Nürnberger Burg", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0779, 49.4567]}},
+    {"type": "Feature", "properties": {"name": "Frauenkirche", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0762, 49.4490]}},
+    {"type": "Feature", "properties": {"name": "St. Sebalduskirche", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0778, 49.4542]}},
+    {"type": "Feature", "properties": {"name": "Schöner Brunnen", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0763, 49.4496]}},
+    {"type": "Feature", "properties": {"name": "Kaiserburg", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0781, 49.4570]}},
+    {"type": "Feature", "properties": {"name": "Handwerkerhof", "type": "tourism"}, "geometry": {"type": "Point", "coordinates": [11.0740, 49.4498]}},
+    {"type": "Feature", "properties": {"name": "Dokumentationszentrum", "type": "tourism"}, "geometry": {"type": "Point", "coordinates": [11.0974, 49.4353]}},
+    {"type": "Feature", "properties": {"name": "Germanisches Nationalmuseum", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0795, 49.4520]}},
+    {"type": "Feature", "properties": {"name": "Weißer Turm", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0793, 49.4556]}},
+    {"type": "Feature", "properties": {"name": "Spittlertor", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0715, 49.4539]}},
+    {"type": "Feature", "properties": {"name": "St. Lorenz Kirche", "type": "historic"}, "geometry": {"type": "Point", "coordinates": [11.0758, 49.4470]}}
+  ]
+}
