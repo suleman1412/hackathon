@@ -94,5 +94,11 @@
     "lon": 10.9912982,
     "display_name": "Fürth Hauptbahnhof, Bahnhofplatz, Altstadt, Innenstadt, Süd, Fürth, Bayern, 90762, Deutschland",
     "cached_at": 1782239087.355131
+  },
+  "nuremberg east": {
+    "lat": 49.342418,
+    "lon": 11.116223,
+    "display_name": "Nuremberg, BY, Germany",
+    "cached_at": 1782242065.73737
   }
 }
