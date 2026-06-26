@@ -4,6 +4,8 @@ A Streamlit web app that finds healthy, scenic walking/cycling/e-scooter routes 
 
 Built for the **Agentic Datathon** as a lightning-presentation demo.
 
+![Green & Clean Commute Optimizer](public/hack.png)
+
 ## Features
 
 - **Natural language queries** — describe your trip like you're talking to a concierge
