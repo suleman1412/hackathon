@@ -100,5 +100,23 @@
     "lon": 11.116223,
     "display_name": "Nuremberg, BY, Germany",
     "cached_at": 1782242065.73737
+  },
+  "hugenottenplatz, erlangen": {
+    "lat": 49.5965892,
+    "lon": 11.0042563,
+    "display_name": "Hugenottenplatz, Innenstadt, Erlangen, Bayern, 91054, Deutschland",
+    "cached_at": 1782763490.18276
+  },
+  "friedrich bauer straße, roncalli stifft": {
+    "lat": 49.285927,
+    "lon": 10.790007,
+    "display_name": "Friedrich-Bauer-Straße, Neuendettelsau, BY, Germany",
+    "cached_at": 1782763491.383709
+  },
+  "friedrich bauer straße, roncalli stift, nuremberg": {
+    "lat": 49.285927,
+    "lon": 10.790007,
+    "display_name": "Friedrich-Bauer-Straße, Neuendettelsau, BY, Germany",
+    "cached_at": 1782763521.7333388
   }
 }
